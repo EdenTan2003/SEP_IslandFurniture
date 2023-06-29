@@ -196,6 +196,7 @@
                 var repassword = document.getElementById("repassword").value;
                 var ok = true;
                 console.log(oldPassword)
+                console.log("Submit Button Working")
                 if (document.getElementById("profileForm").checkValidity()) {
                     if (oldPassword != "" && password != "" && repassword != "") {
                         var memberData = {
@@ -226,6 +227,23 @@
                                     if (password.length != 0 && password.length < 8) {
                                         alert("Passwords too short. At least 8 characters.");
                                         ok = false;
+                                    } else {
+                                        var updateData = {
+                                            "email": sessionStorage.getItem("memberEmail"),
+                                            "password": document.getElementById("password").value
+                                        }
+                                        console.log(updateData)
+                                        fetch(new Request('/api/updateMemberPassword', {
+                                            method: 'PUT',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                Authorization: 'Bearer ' + authToken
+                                            },
+                                            body: JSON.stringify(updateData)
+                                        })).then(function (response) {
+                                            window.alert("Password updated successfully!");
+                                            return response.json();
+                                        })
                                     }
                                 }
                             }
